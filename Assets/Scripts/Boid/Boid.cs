@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[RequireComponent(typeof(BoidDetection))]
 public class Boid : MonoBehaviour
 {
+    /// <summary>
+    /// Used to detect nearby boids for separation/alignment calculation
+    /// </summary>
+    [SerializeField]
+    private BoidDetection boidDetection;
+
     /// <summary>
     /// Boid movement speed (assigned by BoidManager)
     /// </summary>
@@ -27,15 +33,18 @@ public class Boid : MonoBehaviour
 
     void Update()
     {
-        Vector3 viewportPosition = Camera.main.WorldToViewportPoint(transform.position);
-
-        // Fly in straight line
-        transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
+        // Get movement in straight line
+        Vector3 forward = transform.up;
 
         // TODO: Check for collision with other boids and return avoidance vector
-
         // TODO: Check movement direction of nearby boids and return vector with average of directions
 
-        // TODO: Warp to other side of bounds if reached edge
+        // Get averages of all vectors
+        Vector3 sum = (forward).normalized;
+
+        // Apply movement to boid (scaled by movement speed)
+        sum *= moveSpeed * Time.fixedDeltaTime;
+        transform.position += sum;
+
     }
 }
