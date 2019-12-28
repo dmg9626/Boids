@@ -26,12 +26,6 @@ public class Bounds : MonoBehaviour
         transform.localScale = new Vector3(width, height, 1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     /// <summary>
     /// Sent when another object leaves a trigger collider attached to
     /// this object (2D physics only).
