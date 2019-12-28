@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Collider))]
 public class Bounds : MonoBehaviour
 {
     Camera camera;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,8 +18,8 @@ public class Bounds : MonoBehaviour
     /// </summary>
     void FitToCameraBounds()
     {
-        Vector3 bottomLeftBound = Camera.main.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
-        Vector3 topRightBound = Camera.main.ViewportToWorldPoint(new Vector3(1,1,camera.nearClipPlane));
+        Vector3 bottomLeftBound = camera.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
+        Vector3 topRightBound = camera.ViewportToWorldPoint(new Vector3(1,1,camera.nearClipPlane));
         float width = Mathf.Abs(bottomLeftBound.x - topRightBound.x);
         float height = Mathf.Abs(bottomLeftBound.y - topRightBound.y);
 
@@ -31,7 +32,7 @@ public class Bounds : MonoBehaviour
     /// this object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit(Collider other)
     {
         // Get position in viewport-space
         Vector3 otherWorldPos = other.transform.position;
@@ -44,7 +45,6 @@ public class Bounds : MonoBehaviour
         otherWorldPos = camera.ViewportToWorldPoint(otherViewportPos);
         other.transform.position = otherWorldPos;
     }
-
 
     Vector3 WarpToBounds(Vector3 otherViewportPos)
     {
