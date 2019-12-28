@@ -37,6 +37,8 @@ public class Boid : MonoBehaviour
         Vector3 forward = transform.up;
 
         // TODO: Check for collision with other boids and return avoidance vector
+        boidDetection.NearbyBoids(this);
+
         // TODO: Check movement direction of nearby boids and return vector with average of directions
 
         // Get averages of all vectors
@@ -45,6 +47,5 @@ public class Boid : MonoBehaviour
         // Apply movement to boid (scaled by movement speed)
         sum *= moveSpeed * Time.fixedDeltaTime;
         transform.position += sum;
-
     }
 }

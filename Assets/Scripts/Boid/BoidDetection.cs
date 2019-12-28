@@ -11,24 +11,17 @@ public class BoidDetection : MonoBehaviour
     private int raycastCount;
 
     /// <summary>
-    /// Frequency at which to perform detection
-    /// </summary>
-    [SerializeField]
-    [Range(0, .5f)]
-    private float raycastFrequency;
-
-    /// <summary>
     /// Width (in degrees) of cone used for detection
     /// </summary>
     [SerializeField]
     [Range(0, 360)]
-    private float detectionDegrees;
+    private float degrees;
 
     /// <summary>
     /// Radius of cone used for detection
     /// </summary>
     [SerializeField]
-    private float detectionRange;
+    private float range;
 
     /// <summary>
     /// Returns all nearby boids, or null if none detected
@@ -38,10 +31,10 @@ public class BoidDetection : MonoBehaviour
     public List<Boid> NearbyBoids(Boid boid)
     {
         // Perform raycasts around detection slice, return any boids found
-        float halfAngle = detectionDegrees / 2;
+        float halfAngle = degrees / 2;
 
         // Degrees between each raycast
-        float angleStep = detectionDegrees / raycastCount;
+        float angleStep = degrees / raycastCount;
         
         // Get starting/ending angles for raycasts
         float startAngle = boid.transform.rotation.z - halfAngle;
@@ -49,20 +42,37 @@ public class BoidDetection : MonoBehaviour
 
         Vector3 origin = boid.transform.position;
 
-        List<Boid> boids = new List<Boid>();
+        List<Boid> nearbyBoids = new List<Boid>();
         
         // Perform each raycast, revolving from left to right
         for(int i = 0; i < raycastCount; i++) {
-            // Get direction of current raycast
-            Quaternion rotation = Quaternion.Euler(0,0,boid.transform.rotation.z);
-            Vector3 direction = rotation.eulerAngles;
+            Debug.LogFormat("Raycast {0}: {1} degrees (step = {2})", i+1, currentAngle, angleStep);
             
-            // TODO: raycast for nearby boids
-            // if(Physics.Raycast(origin, direction, out RaycastHit hitInfo, detectionRange)) {
-                
-            // }
+            // Create ray with current angle
+            Quaternion rotation = Quaternion.Euler(0,0,currentAngle);
+            Vector3 direction = rotation * boid.transform.up;
+            Ray ray = new Ray(origin, direction);
+
+            // Show ray in editor
+            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+
+            // Perform raycast on Boid layer, store all hits returned
+            int layermask = 1 << LayerMask.NameToLayer("Boid");
+            RaycastHit[] hits = Physics.RaycastAll(ray, range, layermask, QueryTriggerInteraction.Collide);
+
+            foreach(RaycastHit hit in hits) {
+                Debug.LogWarningFormat("Raycast {0} | Checking collision...", i+1);
+                // If raycast hit a boid, add to list
+                if(hit.transform.TryGetComponent(out Boid otherBoid)) {
+                    Debug.LogWarningFormat("Raycast {0} detected boid {1} at {2} degrees", i+1, otherBoid.name, currentAngle);
+                    nearbyBoids.Add(otherBoid);
+                }
+            }
+
+            // Increment angle and repeat
+            currentAngle += angleStep;
         }
 
-        return boids;
+        return nearbyBoids;
     }
 }

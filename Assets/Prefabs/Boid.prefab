@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 673419690836223469}
   - component: {fileID: 673419690836223465}
   - component: {fileID: 2236478791767391777}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.25, y: 1.5}
+  m_Size: {x: 1.5, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &673419690836223469
 Rigidbody2D:
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f79c4e3a5446441297ad893c3badad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidDetection: {fileID: 0}
+  boidDetection: {fileID: 2236478791767391777}
 --- !u!114 &2236478791767391777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f28fb0b73d5547738a7e6498176961b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastCount: 16
-  raycastFrequency: 0.25
-  detectionDegrees: 270
-  detectionRange: 3.5
+  raycastCount: 20
+  raycastFrequency: 0
+  degrees: 270
+  range: 2.5
