@@ -9,25 +9,27 @@ public class Boid : MonoBehaviour
     /// Boid movement speed (assigned by BoidManager)
     /// </summary>
     private float moveSpeed;
-
+    
     public void SetMoveSpeed(float moveSpeed)
     {
         this.moveSpeed = moveSpeed;
     }
 
-    void Start()
+    /// <summary>
+    /// Sets boid rotation (in degrees)
+    /// </summary>
+    /// <param name="degrees"></param>
+    public void SetRotation(float degrees)
     {
-        float angle = Random.Range(0,360);
-        Quaternion rotation = Quaternion.Euler(0,0,angle);
-        transform.rotation = rotation;
+        // Set z-rotation to given angle
+        transform.rotation = Quaternion.Euler(0,0,degrees);
     }
 
     void Update()
     {
         Vector3 viewportPosition = Camera.main.WorldToViewportPoint(transform.position);
-        Debug.Log("Viewport position: " + viewportPosition);
 
-        // TODO: Fly in straight line
+        // Fly in straight line
         transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
 
         // TODO: Check for collision with other boids and return avoidance vector

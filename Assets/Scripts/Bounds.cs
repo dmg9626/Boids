@@ -22,7 +22,7 @@ public class Bounds : MonoBehaviour
         float width = Mathf.Abs(bottomLeftBound.x - topRightBound.x);
         float height = Mathf.Abs(bottomLeftBound.y - topRightBound.y);
 
-        Debug.Log("Camera.Main.orthographicSize: " + camera.orthographicSize);
+        // Debug.Log("Camera.Main.orthographicSize: " + camera.orthographicSize);
         transform.localScale = new Vector3(width, height, 1);
     }
 
@@ -42,7 +42,6 @@ public class Bounds : MonoBehaviour
         // Get position in viewport-space
         Vector3 otherWorldPos = other.transform.position;
         Vector3 otherViewportPos = camera.WorldToViewportPoint(otherWorldPos);
-        Debug.LogWarningFormat("{0} exited bounds at position {1}", other.name, otherViewportPos);
 
         // Warp to other side of bounds
         otherViewportPos = WarpToBounds(otherViewportPos);
@@ -50,7 +49,6 @@ public class Bounds : MonoBehaviour
         // Convert back to world-space and update boid position
         otherWorldPos = camera.ViewportToWorldPoint(otherViewportPos);
         other.transform.position = otherWorldPos;
-        Debug.LogWarningFormat("Warped {0} to position {1}", other.name, otherViewportPos);
     }
 
 

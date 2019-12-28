@@ -33,7 +33,15 @@ public class BoidManager : MonoBehaviour
             // Set boid speed
             boid.SetMoveSpeed(moveSpeed);
 
-            // TODO: set boid position
+            // Set random boid rotation
+            boid.SetRotation(Random.Range(0f,360f));
+
+            // Set random boid position 
+            float distanceFromCamera = 10f;
+            Vector3 viewportPos = new Vector3(Random.value, Random.value, distanceFromCamera);
+            Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewportPos);
+            boid.transform.position = worldPos;
+            Debug.Log("Instantiating boid at position " + worldPos);
         }
     }
 
