@@ -5,12 +5,21 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    [SerializeField]
-    protected float moveSpeed;
+    /// <summary>
+    /// Boid movement speed (assigned by BoidManager)
+    /// </summary>
+    private float moveSpeed;
+
+    public void SetMoveSpeed(float moveSpeed)
+    {
+        this.moveSpeed = moveSpeed;
+    }
 
     void Start()
     {
-        
+        float angle = Random.Range(0,360);
+        Quaternion rotation = Quaternion.Euler(0,0,angle);
+        transform.rotation = rotation;
     }
 
     void Update()
