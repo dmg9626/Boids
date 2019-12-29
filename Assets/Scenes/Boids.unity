@@ -348,8 +348,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 673419690836223465, guid: 3ebddac9a6b674139a95c2eaf083ca61,
     type: 3}
-  numberOfBoids: 5
+  numberOfBoids: 30
   moveSpeed: 15
+  rotationSpeed: 480
 --- !u!4 &937010090
 Transform:
   m_ObjectHideFlags: 0

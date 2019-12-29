@@ -21,6 +21,11 @@ public class BoidManager : Singleton<BoidManager>
     /// </summary>
     public float moveSpeed = 15;
 
+    /// <summary>
+    /// Boid rotation speed
+    /// </summary>
+    public float rotationSpeed = 360;
+
     // Start is called before the first frame update
     void Start()
     {

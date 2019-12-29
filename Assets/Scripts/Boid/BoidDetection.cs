@@ -79,18 +79,22 @@ public class BoidDetection : Singleton<BoidDetection>
         return nearbyBoids;
     }
 
-    public static Vector3 AvoidBoids(Boid self, List<Boid> boids)
+    public Vector3 AvoidBoids(Boid self, List<Boid> boids)
     {
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in boids) {
-            // Apply inverse square law to get strength of repulsion
-            // float strength = Mathf.Min()
+            // Get direction of separation
+            Vector3 direction = (self.transform.position - boid.transform.position);
 
-            Vector3 separation = (self.transform.position - boid.transform.position);
+            // Apply inverse square law to get strength of repulsion force
+            float distance = direction.magnitude;
+            float strength = maxAcceleration * (range - distance) / distance;
+
+            Vector3 separation = direction * strength;
+            
             // Get sum of vectors away from each boid
             sum += separation;
         }
-        
         return sum;
     }
 }
