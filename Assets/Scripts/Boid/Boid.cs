@@ -37,7 +37,10 @@ public class Boid : MonoBehaviour
         Vector3 forward = transform.up;
 
         // TODO: Check for collision with other boids and return avoidance vector
-        boidDetection.NearbyBoids(this);
+        List<Boid> boids = boidDetection.NearbyBoids(this);
+        if(boids.Count > 0) {
+            Debug.LogWarningFormat("{0} | detected {1} nearby boids", name, boids.Count);
+        }
 
         // TODO: Check movement direction of nearby boids and return vector with average of directions
 

@@ -29,6 +29,7 @@ public class BoidManager : MonoBehaviour
         // Instantiate boids in scene
         for(int i = 0; i < numberOfBoids; i++) {
             Boid boid = Instantiate(boidPrefab);
+            boid.name = "Boid " + (i+1);
 
             // Set boid speed
             boid.SetMoveSpeed(moveSpeed);
@@ -43,11 +44,5 @@ public class BoidManager : MonoBehaviour
             boid.transform.position = worldPos;
             Debug.Log("Instantiating boid at position " + worldPos);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

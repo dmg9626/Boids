@@ -46,7 +46,6 @@ public class BoidDetection : MonoBehaviour
         
         // Perform each raycast, revolving from left to right
         for(int i = 0; i < raycastCount; i++) {
-            Debug.LogFormat("Raycast {0}: {1} degrees (step = {2})", i+1, currentAngle, angleStep);
             
             // Create ray with current angle
             Quaternion rotation = Quaternion.Euler(0,0,currentAngle);
@@ -61,10 +60,8 @@ public class BoidDetection : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray, range, layermask, QueryTriggerInteraction.Collide);
 
             foreach(RaycastHit hit in hits) {
-                Debug.LogWarningFormat("Raycast {0} | Checking collision...", i+1);
                 // If raycast hit a boid, add to list
                 if(hit.transform.TryGetComponent(out Boid otherBoid)) {
-                    Debug.LogWarningFormat("Raycast {0} detected boid {1} at {2} degrees", i+1, otherBoid.name, currentAngle);
                     nearbyBoids.Add(otherBoid);
                 }
             }
