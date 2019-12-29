@@ -2,23 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoidDetection))]
 public class Boid : MonoBehaviour
 {
     /// <summary>
-    /// Used to detect nearby boids for separation/alignment calculation
-    /// </summary>
-    [SerializeField]
-    private BoidDetection boidDetection;
-
-    /// <summary>
     /// Boid movement speed (assigned by BoidManager)
     /// </summary>
-    private float moveSpeed;
-    
-    public void SetMoveSpeed(float moveSpeed)
-    {
-        this.moveSpeed = moveSpeed;
+    private float moveSpeed {
+        get {
+            return BoidManager.Instance.moveSpeed;
+        }
+        set{}
     }
 
     /// <summary>
@@ -37,15 +30,22 @@ public class Boid : MonoBehaviour
         Vector3 forward = transform.up;
 
         // TODO: Check for collision with other boids and return avoidance vector
-        List<Boid> boids = boidDetection.NearbyBoids(this);
+        Vector3 avoidance = Vector3.zero;
+        
+        List<Boid> boids = BoidDetection.Instance.NearbyBoids(this);
         if(boids.Count > 0) {
             Debug.LogWarningFormat("{0} | detected {1} nearby boids", name, boids.Count);
+            avoidance = BoidDetection.AvoidBoids(this, boids).normalized;
         }
+        
 
         // TODO: Check movement direction of nearby boids and return vector with average of directions
 
         // Get averages of all vectors
-        Vector3 sum = (forward).normalized;
+        Vector3 sum = (forward + avoidance).normalized;
+
+        Vector3 movement = sum * moveSpeed;
+        Debug.DrawRay(transform.position, movement, Color.green);
 
         // Apply movement to boid (scaled by movement speed)
         sum *= moveSpeed * Time.fixedDeltaTime;

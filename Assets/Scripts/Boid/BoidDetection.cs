@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoidDetection : MonoBehaviour
+public class BoidDetection : Singleton<BoidDetection>
 {
     /// <summary>
     /// Number of raycasts to perform for detection
@@ -24,11 +24,17 @@ public class BoidDetection : MonoBehaviour
     private float range;
 
     /// <summary>
+    /// Acceleration used when calculating separation
+    /// </summary>
+    [SerializeField]
+    private float maxAcceleration = 15;
+
+    /// <summary>
     /// Returns all nearby boids, or null if none detected
     /// </summary>
-    /// <param name="boid">Boid</param>
+    /// <param name="self">Boid</param>
     /// <returns></returns>
-    public List<Boid> NearbyBoids(Boid boid)
+    public List<Boid> NearbyBoids(Boid self)
     {
         // Perform raycasts around detection slice, return any boids found
         float halfAngle = degrees / 2;
@@ -37,10 +43,10 @@ public class BoidDetection : MonoBehaviour
         float angleStep = degrees / raycastCount;
         
         // Get starting/ending angles for raycasts
-        float startAngle = boid.transform.rotation.z - halfAngle;
+        float startAngle = self.transform.rotation.z - halfAngle;
         float currentAngle = startAngle;
 
-        Vector3 origin = boid.transform.position;
+        Vector3 origin = self.transform.position;
 
         List<Boid> nearbyBoids = new List<Boid>();
         
@@ -49,7 +55,7 @@ public class BoidDetection : MonoBehaviour
             
             // Create ray with current angle
             Quaternion rotation = Quaternion.Euler(0,0,currentAngle);
-            Vector3 direction = rotation * boid.transform.up;
+            Vector3 direction = rotation * self.transform.up;
             Ray ray = new Ray(origin, direction);
 
             // Show ray in editor
@@ -71,5 +77,20 @@ public class BoidDetection : MonoBehaviour
         }
 
         return nearbyBoids;
+    }
+
+    public static Vector3 AvoidBoids(Boid self, List<Boid> boids)
+    {
+        Vector3 sum = Vector3.zero;
+        foreach(Boid boid in boids) {
+            // Apply inverse square law to get strength of repulsion
+            // float strength = Mathf.Min()
+
+            Vector3 separation = (self.transform.position - boid.transform.position);
+            // Get sum of vectors away from each boid
+            sum += separation;
+        }
+        
+        return sum;
     }
 }

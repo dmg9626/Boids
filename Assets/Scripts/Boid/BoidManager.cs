@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoidManager : MonoBehaviour
+public class BoidManager : Singleton<BoidManager>
 {
     /// <summary>
     /// Reference to boid prefab (used for instantiation)
@@ -14,14 +14,12 @@ public class BoidManager : MonoBehaviour
     /// Number of boids to spawn
     /// </summary>
     [SerializeField]
-    private int numberOfBoids = 1;
+    private int numberOfBoids;
 
     /// <summary>
     /// Boid movement speed
     /// </summary>
-    [SerializeField]
-    private float moveSpeed = 15;
-
+    public float moveSpeed = 15;
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +28,6 @@ public class BoidManager : MonoBehaviour
         for(int i = 0; i < numberOfBoids; i++) {
             Boid boid = Instantiate(boidPrefab);
             boid.name = "Boid " + (i+1);
-
-            // Set boid speed
-            boid.SetMoveSpeed(moveSpeed);
 
             // Set random boid rotation
             boid.SetRotation(Random.Range(0f,360f));
