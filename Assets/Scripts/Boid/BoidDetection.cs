@@ -79,10 +79,16 @@ public class BoidDetection : Singleton<BoidDetection>
         return nearbyBoids;
     }
 
-    public Vector3 AvoidBoids(Boid self, List<Boid> boids)
+    /// <summary>
+    /// Returns vector of separation for given boid
+    /// </summary>
+    /// <param name="self">Boid to calculate separation for</param>
+    /// <param name="neighbors">Neighboring boids</param>
+    /// <returns></returns>
+    public Vector3 GetSeparation(Boid self, List<Boid> neighbors)
     {
         Vector3 sum = Vector3.zero;
-        foreach(Boid boid in boids) {
+        foreach(Boid boid in neighbors) {
             // Get direction of separation
             Vector3 direction = (self.transform.position - boid.transform.position);
 
@@ -96,5 +102,29 @@ public class BoidDetection : Singleton<BoidDetection>
             sum += separation;
         }
         return sum;
+    }
+
+    /// <summary>
+    /// Returns vector of alignment (average movement direction of neighbors) for given boid
+    /// </summary>
+    /// <param name="self">Boid to calculate separation for</param>
+    /// <param name="neighbors">Neighboring boids</param>
+    /// <returns></returns>
+    public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
+    {
+        // TODO: calculate alignment
+        return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Returns vector of cohesion (average position of neighbors) for given boid
+    /// </summary>
+    /// <param name="self">Boid to calculate separation for</param>
+    /// <param name="neighbors">Neighboring boids</param>
+    /// <returns></returns>
+    public Vector3 GetCohesion(Boid self, List<Boid> neighbors)
+    {
+        // TODO: calculate cohesion
+        return Vector3.zero;
     }
 }

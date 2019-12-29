@@ -44,17 +44,17 @@ public class Boid : MonoBehaviour
         
         List<Boid> boids = BoidDetection.Instance.NearbyBoids(this);
         if(boids.Count > 0) {
-            Debug.LogWarningFormat("{0} | detected {1} nearby boids", name, boids.Count);
-            separation = BoidDetection.Instance.AvoidBoids(this, boids).normalized;
-            Debug.LogWarningFormat("{0} | avoidance vector: {1}", name, separation);
+            separation = BoidDetection.Instance.GetSeparation(this, boids).normalized;
         }
         
         // TODO: Check movement direction of nearby boids and return vector with average of directions
+        Vector3 alignment = BoidDetection.Instance.GetAlignment(this, boids).normalized;
+
         // TODO: CHeck postiions of nearby boids and return vector towards center of flock (avg. position)
+        Vector3 cohesion = BoidDetection.Instance.GetCohesion(this, boids).normalized;
 
         // Get averages of all vectors
-        Vector3 sum = (forward + separation).normalized;
-        
+        Vector3 sum = (forward + separation + alignment + cohesion).normalized;
         Debug.DrawRay(transform.position, sum * moveSpeed, Color.green);
 
         // Apply resulting rotation to boid
@@ -64,6 +64,10 @@ public class Boid : MonoBehaviour
         transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
     }
 
+    /// <summary>
+    /// Rotates boid in given direction
+    /// </summary>
+    /// <param name="direction">Target rotation</param>
     void RotateTowards(Vector3 direction)
     {
         // Get angle to target (in degrees)
