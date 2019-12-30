@@ -113,7 +113,7 @@ public class BoidDetection : Singleton<BoidDetection>
     public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
     {
         // Calculate average direction of neighbors
-        Vector3 sum = Vector3.zero;
+        Vector3 sum = self.transform.up;
         foreach(Boid boid in neighbors) {
             // Get direction of boid
             sum += boid.transform.up;
@@ -130,7 +130,15 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetCohesion(Boid self, List<Boid> neighbors)
     {
-        // TODO: calculate cohesion
-        return Vector3.zero;
+        // Calculate average position of neighbors
+        Vector3 sum = Vector3.zero;
+        foreach(Boid boid in neighbors) {
+            // Get direction of boid
+            sum += boid.transform.position;
+        }
+        Vector3 averagePosition = sum / neighbors.Count;
+
+        // Return vector towards average position
+        return averagePosition - self.transform.position;
     }
 }
