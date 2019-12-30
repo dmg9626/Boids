@@ -112,8 +112,14 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
     {
-        // TODO: calculate alignment
-        return Vector3.zero;
+        // Calculate average direction of neighbors
+        Vector3 sum = Vector3.zero;
+        foreach(Boid boid in neighbors) {
+            // Get direction of boid
+            sum += boid.transform.up;
+        }
+
+        return sum / neighbors.Count;
     }
 
     /// <summary>

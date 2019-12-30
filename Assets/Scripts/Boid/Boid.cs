@@ -46,8 +46,6 @@ public class Boid : MonoBehaviour
         if(boids.Count > 0) {
             separation = BoidDetection.Instance.GetSeparation(this, boids).normalized;
         }
-        
-        // TODO: Check movement direction of nearby boids and return vector with average of directions
         Vector3 alignment = BoidDetection.Instance.GetAlignment(this, boids).normalized;
 
         // TODO: CHeck postiions of nearby boids and return vector towards center of flock (avg. position)
