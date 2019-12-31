@@ -4,6 +4,27 @@ using UnityEngine;
 
 public class BoidDetection : Singleton<BoidDetection>
 {
+    [Header("Boid Behavior Settings")]
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private bool separation = true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private bool alignment = true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private bool cohesion = true;
+
+    [Header("Detection Settings")]
+
     /// <summary>
     /// Number of raycasts to perform for detection
     /// </summary>
@@ -87,6 +108,9 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetSeparation(Boid self, List<Boid> neighbors)
     {
+        if(!separation) {
+            return Vector3.zero;
+        }
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
             // Get direction of separation
@@ -112,6 +136,10 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
     {
+        if(!alignment) {
+            return Vector3.zero;
+        }
+
         // Calculate average direction of neighbors
         Vector3 sum = self.transform.up;
         foreach(Boid boid in neighbors) {
@@ -130,6 +158,10 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetCohesion(Boid self, List<Boid> neighbors)
     {
+        if(!cohesion) {
+            return Vector3.zero;
+        }
+
         // Calculate average position of neighbors
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
