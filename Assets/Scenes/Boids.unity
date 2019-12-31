@@ -348,9 +348,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 673419690836223465, guid: 3ebddac9a6b674139a95c2eaf083ca61,
     type: 3}
-  numberOfBoids: 30
-  moveSpeed: 10
-  rotationSpeed: 480
+  numberOfBoids: 100
+  moveSpeed: 15
+  rotationSpeed: 360
 --- !u!4 &937010090
 Transform:
   m_ObjectHideFlags: 0
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastCount: 20
   degrees: 270
-  range: 2.5
+  range: 1
   maxAcceleration: 20
 --- !u!1 &963194225
 GameObject:
