@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 693168955}
   - component: {fileID: 693168957}
   - component: {fileID: 693168956}
+  - component: {fileID: 693168958}
   m_Layer: 5
   m_Name: Settings Panel
   m_TagString: Untagged
@@ -723,6 +724,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693168954}
   m_CullTransparentMesh: 0
+--- !u!114 &693168958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693168954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a05b578e381a041b490548ea59b352de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  separationSlider: {fileID: 1149011470}
+  alignmentSlider: {fileID: 588894007}
+  cohesionSlider: {fileID: 914632093}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
