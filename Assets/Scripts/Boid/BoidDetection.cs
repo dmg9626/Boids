@@ -6,22 +6,47 @@ public class BoidDetection : Singleton<BoidDetection>
 {
     [Header("Boid Behavior Settings")]
     /// <summary>
-    /// 
+    /// Boids try to avoid neighboring boids if true
     /// </summary>
     [SerializeField]
     private bool separation = true;
 
     /// <summary>
-    /// 
+    /// Boids try to fly in the same direction of nearby boids if true
     /// </summary>
     [SerializeField]
     private bool alignment = true;
 
     /// <summary>
-    /// 
+    /// Boids try to move towards the center of the flock if true
     /// </summary>
     [SerializeField]
     private bool cohesion = true;
+
+    [Space(10)]
+
+    /// <summary>
+    /// Weight used to control separation force
+    /// </summary>
+    [SerializeField]
+    [Range(0,1)]
+    private float separationWeight = 1;
+    
+    /// <summary>
+    /// Weight used to control alignment force
+    /// </summary>
+    [SerializeField]
+    [Range(0,1)]
+    private float alignmentWeight = 1;
+    
+    /// <summary>
+    /// Weight used to control cohesion force
+    /// </summary>
+    [SerializeField]
+    [Range(0,1)]
+    private float cohesionWeight = 1;
+
+
 
     [Header("Detection Settings")]
 
@@ -111,6 +136,7 @@ public class BoidDetection : Singleton<BoidDetection>
         if(!separation) {
             return Vector3.zero;
         }
+        
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
             // Get direction of separation
@@ -125,7 +151,7 @@ public class BoidDetection : Singleton<BoidDetection>
             // Get sum of vectors away from each boid
             sum += separation;
         }
-        return sum;
+        return sum * separationWeight;
     }
 
     /// <summary>
@@ -143,11 +169,10 @@ public class BoidDetection : Singleton<BoidDetection>
         // Calculate average direction of neighbors
         Vector3 sum = self.transform.up;
         foreach(Boid boid in neighbors) {
-            // Get direction of boid
             sum += boid.transform.up;
         }
 
-        return sum / neighbors.Count;
+        return (sum / neighbors.Count) * alignmentWeight;
     }
 
     /// <summary>
@@ -165,12 +190,11 @@ public class BoidDetection : Singleton<BoidDetection>
         // Calculate average position of neighbors
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
-            // Get direction of boid
             sum += boid.transform.position;
         }
         Vector3 averagePosition = sum / neighbors.Count;
 
         // Return vector towards average position
-        return averagePosition - self.transform.position;
+        return (averagePosition - self.transform.position) * cohesionWeight;
     }
 }

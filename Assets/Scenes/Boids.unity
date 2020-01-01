@@ -377,6 +377,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f28fb0b73d5547738a7e6498176961b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  separation: 1
+  alignment: 1
+  cohesion: 1
+  separationWeight: 1
+  alignmentWeight: 0.577
+  cohesionWeight: 0.282
   raycastCount: 20
   degrees: 270
   range: 1
