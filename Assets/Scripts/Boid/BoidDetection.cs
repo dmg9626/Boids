@@ -1,53 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BoidDetection : Singleton<BoidDetection>
 {
+    #region BoidBehaviorSettings
+    
     [Header("Boid Behavior Settings")]
-    /// <summary>
-    /// Boids try to avoid neighboring boids if true
-    /// </summary>
-    [SerializeField]
-    private bool separation = true;
-
-    /// <summary>
-    /// Boids try to fly in the same direction of nearby boids if true
-    /// </summary>
-    [SerializeField]
-    private bool alignment = true;
-
-    /// <summary>
-    /// Boids try to move towards the center of the flock if true
-    /// </summary>
-    [SerializeField]
-    private bool cohesion = true;
-
-    [Space(10)]
 
     /// <summary>
     /// Weight used to control separation force
     /// </summary>
     [SerializeField]
     [Range(0,1)]
-    private float separationWeight = 1;
+    public float separation;
     
     /// <summary>
     /// Weight used to control alignment force
     /// </summary>
     [SerializeField]
     [Range(0,1)]
-    private float alignmentWeight = 1;
+    public float alignment;
     
     /// <summary>
     /// Weight used to control cohesion force
     /// </summary>
     [SerializeField]
     [Range(0,1)]
-    private float cohesionWeight = 1;
+    public float cohesion;
 
+    #endregion
 
-
+    #region DetectionSettings
+    
     [Header("Detection Settings")]
 
     /// <summary>
@@ -74,7 +60,9 @@ public class BoidDetection : Singleton<BoidDetection>
     /// </summary>
     [SerializeField]
     private float maxAcceleration = 15;
-
+    
+    #endregion
+    
     /// <summary>
     /// Returns all nearby boids, or null if none detected
     /// </summary>
@@ -133,10 +121,6 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetSeparation(Boid self, List<Boid> neighbors)
     {
-        if(!separation) {
-            return Vector3.zero;
-        }
-        
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
             // Get direction of separation
@@ -151,7 +135,7 @@ public class BoidDetection : Singleton<BoidDetection>
             // Get sum of vectors away from each boid
             sum += separation;
         }
-        return sum * separationWeight;
+        return sum * separation;
     }
 
     /// <summary>
@@ -162,17 +146,13 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
     {
-        if(!alignment) {
-            return Vector3.zero;
-        }
-
         // Calculate average direction of neighbors
         Vector3 sum = self.transform.up;
         foreach(Boid boid in neighbors) {
             sum += boid.transform.up;
         }
 
-        return (sum / neighbors.Count) * alignmentWeight;
+        return (sum / neighbors.Count) * alignment;
     }
 
     /// <summary>
@@ -183,10 +163,6 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <returns></returns>
     public Vector3 GetCohesion(Boid self, List<Boid> neighbors)
     {
-        if(!cohesion) {
-            return Vector3.zero;
-        }
-
         // Calculate average position of neighbors
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
@@ -195,6 +171,6 @@ public class BoidDetection : Singleton<BoidDetection>
         Vector3 averagePosition = sum / neighbors.Count;
 
         // Return vector towards average position
-        return (averagePosition - self.transform.position) * cohesionWeight;
+        return (averagePosition - self.transform.position) * cohesion;
     }
 }

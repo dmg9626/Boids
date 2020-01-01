@@ -55,19 +55,19 @@ public class SettingsPanel : MonoBehaviour
         BoidDetection boidDetection = BoidDetection.Instance;
 
         // Initialize sliders with default values
-        separationSlider.value = boidDetection.separationWeight;
-        alignmentSlider.value = boidDetection.alignmentWeight;
-        cohesionSlider.value = boidDetection.cohesionWeight;
+        separationSlider.value = boidDetection.separation;
+        alignmentSlider.value = boidDetection.alignment;
+        cohesionSlider.value = boidDetection.cohesion;
 
         // Store default values so we can restore them later
-        defaultSeparationWeight = boidDetection.separationWeight;
-        defaultAlignmentWeight = boidDetection.alignmentWeight;
-        defaultCohesionWeight = boidDetection.cohesionWeight;
+        defaultSeparationWeight = boidDetection.separation;
+        defaultAlignmentWeight = boidDetection.alignment;
+        defaultCohesionWeight = boidDetection.cohesion;
 
         // Set up slider events to update boid settings with changed values
-        separationSlider.onValueChanged.AddListener((value) => boidDetection.separationWeight = value);
-        alignmentSlider.onValueChanged.AddListener((value) => boidDetection.alignmentWeight = value);
-        cohesionSlider.onValueChanged.AddListener((value) => boidDetection.cohesionWeight = value);
+        separationSlider.onValueChanged.AddListener((value) => boidDetection.separation = value);
+        alignmentSlider.onValueChanged.AddListener((value) => boidDetection.alignment = value);
+        cohesionSlider.onValueChanged.AddListener((value) => boidDetection.cohesion = value);
     }
 
     private void InitializeButtons()
@@ -108,8 +108,8 @@ public class SettingsPanel : MonoBehaviour
         cohesionSlider.value = defaultCohesionWeight;
 
         // Restore default values for each setting
-        boidDetection.separationWeight = defaultSeparationWeight;
-        boidDetection.alignmentWeight = defaultAlignmentWeight;
-        boidDetection.cohesionWeight = defaultCohesionWeight;
+        boidDetection.separation = defaultSeparationWeight;
+        boidDetection.alignment = defaultAlignmentWeight;
+        boidDetection.cohesion = defaultCohesionWeight;
     }
 }
