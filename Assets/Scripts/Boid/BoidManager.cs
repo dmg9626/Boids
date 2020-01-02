@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoidManager : Singleton<BoidManager>
 {
+    /// <summary>
+    /// Displays number of boids in scene
+    /// </summary>
+    [SerializeField]
+    private Text boidCounter;
+
     /// <summary>
     /// Reference to boid prefab (used for instantiation)
     /// </summary>
@@ -11,7 +18,7 @@ public class BoidManager : Singleton<BoidManager>
     private Boid boidPrefab;
 
     /// <summary>
-    /// Number of boids to spawn
+    /// Number of boids in scene
     /// </summary>
     [SerializeField]
     private int numberOfBoids;
@@ -36,6 +43,8 @@ public class BoidManager : Singleton<BoidManager>
             Boid boid = SpawnBoid();
             boid.name = "Boid " + (i+1);
         }
+
+        UpdateBoidCounter();
     }
 
     void Update()
@@ -48,7 +57,15 @@ public class BoidManager : Singleton<BoidManager>
 
             Debug.Log("Spawning boid at " + viewportPos);
             Boid boid = SpawnBoid(viewportPos);
+
+            numberOfBoids++;
+            UpdateBoidCounter();
         }
+    }
+
+    void UpdateBoidCounter()
+    {
+        boidCounter.text = "Boids: " + numberOfBoids;
     }
 
     /// <summary>
