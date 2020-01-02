@@ -40,15 +40,10 @@ public class Boid : MonoBehaviour
         // Get movement in straight line
         Vector3 forward = transform.up;
 
-        Vector3 separation = Vector3.zero;
-        
         List<Boid> boids = BoidDetection.Instance.NearbyBoids(this);
-        if(boids.Count > 0) {
-            separation = BoidDetection.Instance.GetSeparation(this, boids).normalized;
-        }
+        
+        Vector3 separation = BoidDetection.Instance.GetSeparation(this, boids).normalized;
         Vector3 alignment = BoidDetection.Instance.GetAlignment(this, boids).normalized;
-
-        // TODO: CHeck postiions of nearby boids and return vector towards center of flock (avg. position)
         Vector3 cohesion = BoidDetection.Instance.GetCohesion(this, boids).normalized;
 
         // Get averages of all vectors

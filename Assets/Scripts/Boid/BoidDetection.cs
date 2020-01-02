@@ -84,6 +84,10 @@ public class BoidDetection : Singleton<BoidDetection>
 
         List<Boid> nearbyBoids = new List<Boid>();
         
+        // Instantiate array to hold hits returned by each raycast (required for Physics.RaycastNonAlloc)
+        int boidsPerRaycast = 2;
+        RaycastHit[] hits = new RaycastHit[boidsPerRaycast];
+
         // Perform each raycast, revolving from left to right
         for(int i = 0; i < raycastCount; i++) {
             
@@ -97,10 +101,11 @@ public class BoidDetection : Singleton<BoidDetection>
 
             // Perform raycast on Boid layer, store all hits returned
             int layermask = 1 << LayerMask.NameToLayer("Boid");
-            RaycastHit[] hits = Physics.RaycastAll(ray, range, layermask, QueryTriggerInteraction.Collide);
+            int numHits = Physics.RaycastNonAlloc(ray, hits, range, layermask, QueryTriggerInteraction.Collide);
 
-            foreach(RaycastHit hit in hits) {
-                // If raycast hit a boid, add to list
+            // If raycast hit any boids, add them to list
+            for(int j = 0; j < numHits; j++) {
+                RaycastHit hit = hits[j];
                 if(hit.transform.TryGetComponent(out Boid otherBoid)) {
                     nearbyBoids.Add(otherBoid);
                 }
