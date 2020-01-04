@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +19,38 @@ public class SettingsPanel : MonoBehaviour
     private Slider cohesionSlider;
     #endregion
 
-    #region Buttons
-    [Header("Buttons")]
+    #region ModalButtons
+    [Header("Move Speed")]
+
+    [SerializeField]
+    private Button increaseMoveSpeed;
+
+    [SerializeField]
+    private Button decreaseMoveSpeed;
+
+    /// <summary>
+    /// Shows current value for boid movement speed
+    /// </summary>
+    [SerializeField]
+    private Text movementSpeed;
+
+    [Header("Rotation Speed")]
+    [SerializeField]
+    private Button increaseRotationSpeed;
+
+    [SerializeField]
+    private Button decreaseRotationSpeed;
+    
+    /// <summary>
+    /// Shows current value for boid rotation speed
+    /// </summary>
+    [SerializeField]
+    private Text rotationSpeed;
+
+    #endregion
+    
+    #region MiscButtons
+    [Header("Misc Buttons")]
 
     /// <summary>
     /// Hides settings panel when clicked
@@ -48,6 +79,13 @@ public class SettingsPanel : MonoBehaviour
     {
         InitializeSliders();
         InitializeButtons();
+        UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        rotationSpeed.text = BoidManager.Instance.rotationSpeed.ToString();
+        movementSpeed.text = BoidManager.Instance.moveSpeed.ToString();
     }
 
     private void InitializeSliders()
@@ -76,8 +114,35 @@ public class SettingsPanel : MonoBehaviour
         minimizeButton.onClick.AddListener(() => Minimize());
         maximizeButton.onClick.AddListener(() => Maximize());
 
+        // Set up movement/rotation speed adjustment buttons
+        increaseMoveSpeed.onClick.AddListener(() => ChangeMoveSpeed(1));
+        decreaseMoveSpeed.onClick.AddListener(() => ChangeMoveSpeed(-1));
+
+        increaseRotationSpeed.onClick.AddListener(() => ChangeRotationSpeed(30));
+        decreaseRotationSpeed.onClick.AddListener(() => ChangeRotationSpeed(-30));
+
         // Set up reset button to restore default flocking values
         resetButton.onClick.AddListener(() => ResetValues());
+    }
+
+    /// <summary>
+    /// Changes rotation speed and updates UI
+    /// </summary>
+    /// <param name="change"></param>
+    private void ChangeRotationSpeed(float change)
+    {
+        BoidManager.Instance.rotationSpeed += change;
+        UpdateText();
+    }
+
+    /// <summary>
+    /// Changes movement speed and updates UI
+    /// </summary>
+    /// <param name="change"></param>
+    private void ChangeMoveSpeed(float change)
+    {
+        BoidManager.Instance.moveSpeed += change;
+        UpdateText();
     }
 
     /// <summary>
