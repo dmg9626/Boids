@@ -1872,7 +1872,6 @@ GameObject:
   m_Component:
   - component: {fileID: 937010090}
   - component: {fileID: 937010089}
-  - component: {fileID: 937010091}
   m_Layer: 0
   m_Name: BoidManager
   m_TagString: Untagged
@@ -1892,12 +1891,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff17f3ee451ac41cc8a153fca49c9ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings:
+    separation: 1
+    alignment: 0.25
+    cohesion: 0.55
+    raycastCount: 8
+    degrees: 270
+    range: 1
+    maxAcceleration: 20
+    moveSpeed: 10
+    rotationSpeed: 360
   boidCounter: {fileID: 1098958254}
   boidPrefab: {fileID: 673419690836223465, guid: 3ebddac9a6b674139a95c2eaf083ca61,
     type: 3}
   numberOfBoids: 200
-  moveSpeed: 10
-  rotationSpeed: 360
 --- !u!4 &937010090
 Transform:
   m_ObjectHideFlags: 0
@@ -1912,25 +1919,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &937010091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937010088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f28fb0b73d5547738a7e6498176961b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  separation: 1
-  alignment: 0.25
-  cohesion: 0.55
-  raycastCount: 8
-  degrees: 270
-  range: 1
-  maxAcceleration: 20
 --- !u!1 &939440206
 GameObject:
   m_ObjectHideFlags: 0

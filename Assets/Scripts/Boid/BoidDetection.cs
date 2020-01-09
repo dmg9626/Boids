@@ -3,78 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BoidDetection : Singleton<BoidDetection>
+public class BoidDetection
 {
-    #region BoidBehaviorSettings
-    
-    [Header("Boid Behavior Settings")]
-
-    /// <summary>
-    /// Weight used to control separation force
-    /// </summary>
-    [SerializeField]
-    [Range(0,1)]
-    public float separation;
-    
-    /// <summary>
-    /// Weight used to control alignment force
-    /// </summary>
-    [SerializeField]
-    [Range(0,1)]
-    public float alignment;
-    
-    /// <summary>
-    /// Weight used to control cohesion force
-    /// </summary>
-    [SerializeField]
-    [Range(0,1)]
-    public float cohesion;
-
-    #endregion
-
-    #region DetectionSettings
-    
-    [Header("Detection Settings")]
-
-    /// <summary>
-    /// Number of raycasts to perform for detection
-    /// </summary>
-    [SerializeField]
-    private int raycastCount;
-
-    /// <summary>
-    /// Width (in degrees) of cone used for detection
-    /// </summary>
-    [SerializeField]
-    [Range(0, 360)]
-    private float degrees;
-
-    /// <summary>
-    /// Radius of cone used for detection
-    /// </summary>
-    [SerializeField]
-    private float range;
-
-    /// <summary>
-    /// Acceleration used when calculating separation
-    /// </summary>
-    [SerializeField]
-    private float maxAcceleration = 15;
-    
-    #endregion
-    
     /// <summary>
     /// Returns all nearby boids, or null if none detected
     /// </summary>
     /// <param name="self">Boid</param>
     /// <returns></returns>
-    public List<Boid> NearbyBoids(Boid self)
+    public static List<Boid> NearbyBoids(Boid self, Boid.Settings settings)
     {
         // Perform raycasts around detection slice, return any boids found
-        float halfAngle = degrees / 2;
+        float halfAngle = settings.degrees / 2;
 
         // Degrees between each raycast
-        float angleStep = degrees / raycastCount;
+        float angleStep = settings.degrees / settings.raycastCount;
         
         // Get starting/ending angles for raycasts
         float startAngle = self.transform.rotation.z - halfAngle;
@@ -89,7 +31,7 @@ public class BoidDetection : Singleton<BoidDetection>
         RaycastHit[] hits = new RaycastHit[boidsPerRaycast];
 
         // Perform each raycast, revolving from left to right
-        for(int i = 0; i < raycastCount; i++) {
+        for(int i = 0; i < settings.raycastCount; i++) {
             
             // Create ray with current angle
             Quaternion rotation = Quaternion.Euler(0,0,currentAngle);
@@ -97,11 +39,11 @@ public class BoidDetection : Singleton<BoidDetection>
             Ray ray = new Ray(origin, direction);
 
             // Show ray in editor
-            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+            Debug.DrawRay(ray.origin, ray.direction * settings.range, Color.red);
 
             // Perform raycast on Boid layer, store all hits returned
             int layermask = 1 << LayerMask.NameToLayer("Boid");
-            int numHits = Physics.RaycastNonAlloc(ray, hits, range, layermask, QueryTriggerInteraction.Collide);
+            int numHits = Physics.RaycastNonAlloc(ray, hits, settings.range, layermask, QueryTriggerInteraction.Collide);
 
             // If raycast hit any boids, add them to list
             for(int j = 0; j < numHits; j++) {
@@ -124,7 +66,7 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <param name="self">Boid to calculate separation for</param>
     /// <param name="neighbors">Neighboring boids</param>
     /// <returns></returns>
-    public Vector3 GetSeparation(Boid self, List<Boid> neighbors)
+    public static Vector3 GetSeparation(Boid self, List<Boid> neighbors, Boid.Settings settings)
     {
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
@@ -133,14 +75,14 @@ public class BoidDetection : Singleton<BoidDetection>
 
             // Apply inverse square law to get strength of repulsion force
             float distance = direction.magnitude;
-            float strength = maxAcceleration * (range - distance) / distance;
+            float strength = settings.maxAcceleration * (settings.range - distance) / distance;
 
             Vector3 separation = direction * strength;
             
             // Get sum of vectors away from each boid
             sum += separation;
         }
-        return sum * separation;
+        return sum * settings.separation;
     }
 
     /// <summary>
@@ -149,7 +91,7 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <param name="self">Boid to calculate separation for</param>
     /// <param name="neighbors">Neighboring boids</param>
     /// <returns></returns>
-    public Vector3 GetAlignment(Boid self, List<Boid> neighbors)
+    public static Vector3 GetAlignment(Boid self, List<Boid> neighbors, Boid.Settings settings)
     {
         // Calculate average direction of neighbors
         Vector3 sum = self.transform.up;
@@ -157,7 +99,7 @@ public class BoidDetection : Singleton<BoidDetection>
             sum += boid.transform.up;
         }
 
-        return (sum / neighbors.Count) * alignment;
+        return (sum / neighbors.Count) * settings.alignment;
     }
 
     /// <summary>
@@ -166,7 +108,7 @@ public class BoidDetection : Singleton<BoidDetection>
     /// <param name="self">Boid to calculate separation for</param>
     /// <param name="neighbors">Neighboring boids</param>
     /// <returns></returns>
-    public Vector3 GetCohesion(Boid self, List<Boid> neighbors)
+    public static Vector3 GetCohesion(Boid self, List<Boid> neighbors, Boid.Settings settings)
     {
         // Calculate average position of neighbors
         Vector3 sum = Vector3.zero;
@@ -176,6 +118,6 @@ public class BoidDetection : Singleton<BoidDetection>
         Vector3 averagePosition = sum / neighbors.Count;
 
         // Return vector towards average position
-        return (averagePosition - self.transform.position) * cohesion;
+        return (averagePosition - self.transform.position) * settings.cohesion;
     }
 }

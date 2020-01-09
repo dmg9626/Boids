@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BoidManager : Singleton<BoidManager>
 {
+    public Boid.Settings settings;
+
     /// <summary>
     /// Displays number of boids in scene
     /// </summary>
@@ -22,16 +24,6 @@ public class BoidManager : Singleton<BoidManager>
     /// </summary>
     [SerializeField]
     private int numberOfBoids;
-
-    /// <summary>
-    /// Boid movement speed
-    /// </summary>
-    public float moveSpeed = 15;
-
-    /// <summary>
-    /// Boid rotation speed
-    /// </summary>
-    public float rotationSpeed = 360;
 
     float distanceFromCamera = 10f;
 
@@ -56,7 +48,7 @@ public class BoidManager : Singleton<BoidManager>
             viewportPos.z = distanceFromCamera;
 
             Debug.Log("Spawning boid at " + viewportPos);
-            Boid boid = SpawnBoid(viewportPos);
+            Boid boid = SpawnBoidAt(viewportPos);
 
             numberOfBoids++;
             UpdateBoidCounter();
@@ -73,7 +65,7 @@ public class BoidManager : Singleton<BoidManager>
     /// </summary>
     /// <param name="viewportPosition"></param>
     /// <returns></returns>
-    Boid SpawnBoid(Vector3 viewportPosition) 
+    Boid SpawnBoidAt(Vector3 viewportPosition) 
     {
         Boid boid = Instantiate(boidPrefab);
 
@@ -94,6 +86,6 @@ public class BoidManager : Singleton<BoidManager>
     Boid SpawnBoid()
     {
         Vector3 viewportPos = new Vector3(Random.value, Random.value, distanceFromCamera);
-        return SpawnBoid(viewportPos);
+        return SpawnBoidAt(viewportPos);
     }
 }

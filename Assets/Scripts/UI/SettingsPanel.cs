@@ -75,8 +75,12 @@ public class SettingsPanel : MonoBehaviour
     private float defaultAlignmentWeight;
     private float defaultCohesionWeight;
 
+    private Boid.Settings settings;
+
     void Start()
     {
+        settings = BoidManager.Instance.settings;
+
         InitializeSliders();
         InitializeButtons();
         UpdateText();
@@ -84,28 +88,26 @@ public class SettingsPanel : MonoBehaviour
 
     private void UpdateText()
     {
-        rotationSpeed.text = BoidManager.Instance.rotationSpeed.ToString();
-        movementSpeed.text = BoidManager.Instance.moveSpeed.ToString();
+        rotationSpeed.text = settings.rotationSpeed.ToString();
+        movementSpeed.text = settings.moveSpeed.ToString();
     }
 
     private void InitializeSliders()
     {
-        BoidDetection boidDetection = BoidDetection.Instance;
-
         // Initialize sliders with default values
-        separationSlider.value = boidDetection.separation;
-        alignmentSlider.value = boidDetection.alignment;
-        cohesionSlider.value = boidDetection.cohesion;
+        separationSlider.value = settings.separation;
+        alignmentSlider.value = settings.alignment;
+        cohesionSlider.value = settings.cohesion;
 
         // Store default values so we can restore them later
-        defaultSeparationWeight = boidDetection.separation;
-        defaultAlignmentWeight = boidDetection.alignment;
-        defaultCohesionWeight = boidDetection.cohesion;
+        defaultSeparationWeight = settings.separation;
+        defaultAlignmentWeight = settings.alignment;
+        defaultCohesionWeight = settings.cohesion;
 
         // Set up slider events to update boid settings with changed values
-        separationSlider.onValueChanged.AddListener((value) => boidDetection.separation = value);
-        alignmentSlider.onValueChanged.AddListener((value) => boidDetection.alignment = value);
-        cohesionSlider.onValueChanged.AddListener((value) => boidDetection.cohesion = value);
+        separationSlider.onValueChanged.AddListener((value) => settings.separation = value);
+        alignmentSlider.onValueChanged.AddListener((value) => settings.alignment = value);
+        cohesionSlider.onValueChanged.AddListener((value) => settings.cohesion = value);
     }
 
     private void InitializeButtons()
@@ -131,7 +133,7 @@ public class SettingsPanel : MonoBehaviour
     /// <param name="change"></param>
     private void ChangeRotationSpeed(float change)
     {
-        BoidManager.Instance.rotationSpeed += change;
+        settings.rotationSpeed += change;
         UpdateText();
     }
 
@@ -141,7 +143,7 @@ public class SettingsPanel : MonoBehaviour
     /// <param name="change"></param>
     private void ChangeMoveSpeed(float change)
     {
-        BoidManager.Instance.moveSpeed += change;
+        settings.moveSpeed += change;
         UpdateText();
     }
 
@@ -165,16 +167,14 @@ public class SettingsPanel : MonoBehaviour
 
     public void ResetValues()
     {
-        BoidDetection boidDetection = BoidDetection.Instance;
-
         // Reset sliders with default values
         separationSlider.value = defaultSeparationWeight;
         alignmentSlider.value = defaultAlignmentWeight;
         cohesionSlider.value = defaultCohesionWeight;
 
         // Restore default values for each setting
-        boidDetection.separation = defaultSeparationWeight;
-        boidDetection.alignment = defaultAlignmentWeight;
-        boidDetection.cohesion = defaultCohesionWeight;
+        settings.separation = defaultSeparationWeight;
+        settings.alignment = defaultAlignmentWeight;
+        settings.cohesion = defaultCohesionWeight;
     }
 }
