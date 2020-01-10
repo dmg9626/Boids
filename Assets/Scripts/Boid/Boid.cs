@@ -40,6 +40,7 @@ public class Boid : MonoBehaviour
         /// <summary>
         /// Number of raycasts to perform for detection
         /// </summary>
+        [Range(3,30)]
         public int raycastCount;
 
         /// <summary>
@@ -51,6 +52,7 @@ public class Boid : MonoBehaviour
         /// <summary>
         /// Radius of cone used for detection
         /// </summary>
+        [Range(0,10)]
         public float range;
 
         /// <summary>
