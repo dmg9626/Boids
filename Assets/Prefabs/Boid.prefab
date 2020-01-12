@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 673419690836223470}
   - component: {fileID: 673419690836223471}
   - component: {fileID: 673419690836223465}
-  - component: {fileID: 2936244644225183652}
   - component: {fileID: 1516718847114007733}
   m_Layer: 8
   m_Name: Boid
@@ -72,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 91df2566f475546919bd1a7969b5d064, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 90c42d5d6dde142499036abdbbd29819, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,22 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f79c4e3a5446441297ad893c3badad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &2936244644225183652
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 673419690836223458}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &1516718847114007733
 BoxCollider:
   m_ObjectHideFlags: 0
