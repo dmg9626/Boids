@@ -7,6 +7,11 @@ public class Boid : MonoBehaviour
     [System.Serializable]
     public class Settings
     {
+        /// <summary>
+        /// Range of colors that newly-spawned boids can have
+        /// </summary>
+        public Gradient colorRange;
+
         #region BoidBehaviorSettings
 
         [Header("Boid Behavior Settings")]
@@ -78,21 +83,20 @@ public class Boid : MonoBehaviour
         #endregion
     }
 
-    private Settings settings;
+    private Settings settings => BoidManager.Instance.settings;
 
-    /// <summary>
-    /// Sets boid rotation (in degrees)
-    /// </summary>
-    /// <param name="degrees"></param>
-    public void SetRotation(float degrees)
-    {
-        // Set z-rotation to given angle
-        transform.rotation = Quaternion.Euler(0,0,degrees);
-    }
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        settings = BoidManager.Instance.settings;
+        // Set random boid rotation
+        float degrees = Random.Range(0f, 360f);
+        transform.rotation = Quaternion.Euler(0,0,degrees);
+
+        // Pick random color from colorRange gradient
+        if (TryGetComponent(out spriteRenderer)) {
+            spriteRenderer.color = settings.colorRange.Evaluate(Random.value);
+        }
     }
 
     void Update()

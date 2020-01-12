@@ -69,9 +69,6 @@ public class BoidManager : Singleton<BoidManager>
     {
         Boid boid = Instantiate(boidPrefab);
 
-        // Set random boid rotation
-        boid.SetRotation(Random.Range(0f,360f));
-        
         // Set given position
         Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewportPosition);
         boid.transform.position = worldPos;
