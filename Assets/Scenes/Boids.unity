@@ -1938,9 +1938,9 @@ MonoBehaviour:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    separation: 1
-    alignment: 0.25
-    cohesion: 0.55
+    separation: 0.89
+    alignment: 0.85
+    cohesion: 0.6
     raycastCount: 8
     degrees: 270
     range: 1

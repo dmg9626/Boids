@@ -106,9 +106,9 @@ public class Boid : MonoBehaviour
 
         List<Boid> boids = BoidDetection.NearbyBoids(this, settings);
         
-        Vector3 separation = BoidDetection.GetSeparation(this, boids, settings).normalized;
-        Vector3 alignment = BoidDetection.GetAlignment(this, boids, settings).normalized;
-        Vector3 cohesion = BoidDetection.GetCohesion(this, boids, settings).normalized;
+        Vector3 separation = BoidDetection.GetSeparation(this, boids, settings).normalized * settings.separation;
+        Vector3 alignment = BoidDetection.GetAlignment(this, boids, settings).normalized * settings.alignment;
+        Vector3 cohesion = BoidDetection.GetCohesion(this, boids, settings).normalized * settings.cohesion;
 
         // Get averages of all vectors
         Vector3 sum = (forward + separation + alignment + cohesion).normalized;

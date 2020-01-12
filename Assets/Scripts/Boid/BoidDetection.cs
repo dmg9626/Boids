@@ -82,7 +82,7 @@ public class BoidDetection
             // Get sum of vectors away from each boid
             sum += separation;
         }
-        return sum * settings.separation;
+        return sum;
     }
 
     /// <summary>
@@ -93,13 +93,17 @@ public class BoidDetection
     /// <returns></returns>
     public static Vector3 GetAlignment(Boid self, List<Boid> neighbors, Boid.Settings settings)
     {
+        if (neighbors.Count == 0) {
+            return Vector3.zero;
+        }
+
         // Calculate average direction of neighbors
         Vector3 sum = self.transform.up;
         foreach(Boid boid in neighbors) {
             sum += boid.transform.up;
         }
 
-        return (sum / neighbors.Count) * settings.alignment;
+        return (sum / neighbors.Count);
     }
 
     /// <summary>
@@ -110,6 +114,10 @@ public class BoidDetection
     /// <returns></returns>
     public static Vector3 GetCohesion(Boid self, List<Boid> neighbors, Boid.Settings settings)
     {
+        if (neighbors.Count == 0) {
+            return Vector3.zero;
+        }
+
         // Calculate average position of neighbors
         Vector3 sum = Vector3.zero;
         foreach(Boid boid in neighbors) {
@@ -118,6 +126,6 @@ public class BoidDetection
         Vector3 averagePosition = sum / neighbors.Count;
 
         // Return vector towards average position
-        return (averagePosition - self.transform.position) * settings.cohesion;
+        return (averagePosition - self.transform.position);
     }
 }
