@@ -12,6 +12,11 @@ public class BoidManager : Singleton<BoidManager>
     /// </summary>
     [SerializeField]
     private Boid boidPrefab;
+    
+    [SerializeField]    
+    private Button clickDetection;
+
+    [Header("Boid Count Settings")]
 
     /// <summary>
     /// Starting boids in scene
@@ -30,6 +35,7 @@ public class BoidManager : Singleton<BoidManager>
     [SerializeField]
     private int maxBoids = 400;
 
+
     float distanceFromCamera = 10f;
 
     void Start()
@@ -37,29 +43,30 @@ public class BoidManager : Singleton<BoidManager>
         // Instantiate boids in scene
         for(int i = 0; i < startingBoids; i++) {
             // Spawn bird at random position
-            Boid boid = SpawnBoid();
+            Boid boid = SpawnBoid(new Vector3(Random.value, Random.value, distanceFromCamera));
         }
+
+        // Spawn boid at click position if haven't exceeded max count
+        clickDetection.onClick.AddListener(() => {
+            if(numberOfBoids < maxBoids) {
+                Vector3 screenPos = Input.mousePosition;
+                Vector3 viewportPos = Camera.main.ScreenToViewportPoint(screenPos);
+                viewportPos.z = distanceFromCamera;
+
+                // Debug.Log("Spawning boid at " + viewportPos);
+                Boid boid = SpawnBoid(viewportPos);
+            }
+        });
     }
 
-    void Update()
-    {
-        // Click to spawn boid at mouse position
-        if(numberOfBoids < maxBoids && Input.GetMouseButtonDown(0)) {
-            Vector3 screenPos = Input.mousePosition;
-            Vector3 viewportPos = Camera.main.ScreenToViewportPoint(screenPos);
-            viewportPos.z = distanceFromCamera;
 
-            Debug.Log("Spawning boid at " + viewportPos);
-            Boid boid = SpawnBoidAt(viewportPos);
-        }
-    }
 
     /// <summary>
     /// Spawn boid at given position in viewport space (x-y coordinates between 0 and 1)
     /// </summary>
-    /// <param name="viewportPosition"></param>
+    /// <param name="viewportPosition">Spawn position in viewport</param>
     /// <returns></returns>
-    Boid SpawnBoidAt(Vector3 viewportPosition) 
+    Boid SpawnBoid(Vector3 viewportPosition) 
     {
         // Increment number of boids
         numberOfBoids++;
@@ -72,15 +79,5 @@ public class BoidManager : Singleton<BoidManager>
         boid.transform.position = worldPos;
 
         return boid;
-    }
-    
-    /// <summary>
-    /// Spawn boid at random position on screen
-    /// </summary>
-    /// <returns></returns>
-    Boid SpawnBoid()
-    {
-        Vector3 viewportPos = new Vector3(Random.value, Random.value, distanceFromCamera);
-        return SpawnBoidAt(viewportPos);
     }
 }
