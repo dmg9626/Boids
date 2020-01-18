@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1941,16 +1941,17 @@ MonoBehaviour:
     separation: 0.89
     alignment: 0.85
     cohesion: 0.6
-    raycastCount: 8
+    noise: 0
+    raycastCount: 5
     degrees: 270
     range: 1
     maxAcceleration: 20
     moveSpeed: 10
     rotationSpeed: 360
-  boidCounter: {fileID: 1098958254}
   boidPrefab: {fileID: 673419690836223465, guid: 3ebddac9a6b674139a95c2eaf083ca61,
     type: 3}
-  numberOfBoids: 200
+  startingBoids: 150
+  maxBoids: 300
 --- !u!4 &937010090
 Transform:
   m_ObjectHideFlags: 0
@@ -2387,6 +2388,7 @@ GameObject:
   - component: {fileID: 1098958253}
   - component: {fileID: 1098958255}
   - component: {fileID: 1098958254}
+  - component: {fileID: 1098958256}
   m_Layer: 5
   m_Name: Boid Count
   m_TagString: Untagged
@@ -2453,6 +2455,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098958252}
   m_CullTransparentMesh: 0
+--- !u!114 &1098958256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098958252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56c9b80874f24141b85249b0d42745b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1129821362
 GameObject:
   m_ObjectHideFlags: 0
