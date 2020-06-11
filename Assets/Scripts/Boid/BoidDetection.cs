@@ -6,6 +6,16 @@ using UnityEngine.Serialization;
 public class BoidDetection
 {
     /// <summary>
+    /// Number of boids to track per raycast
+    /// </summary>
+    private static int boidsPerRaycast = 2;
+
+    /// <summary>
+    /// Array holding raycast hit results
+    /// </summary>
+    private static RaycastHit[] hits = new RaycastHit[boidsPerRaycast];
+
+    /// <summary>
     /// Returns all nearby boids, or null if none detected
     /// </summary>
     /// <param name="self">Boid</param>
@@ -26,10 +36,6 @@ public class BoidDetection
 
         List<Boid> nearbyBoids = new List<Boid>();
         
-        // Instantiate array to hold hits returned by each raycast (required for Physics.RaycastNonAlloc)
-        int boidsPerRaycast = 2;
-        RaycastHit[] hits = new RaycastHit[boidsPerRaycast];
-
         // Perform each raycast, revolving from left to right
         for(int i = 0; i < settings.raycastCount; i++) {
             
