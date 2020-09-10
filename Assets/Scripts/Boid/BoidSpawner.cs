@@ -49,6 +49,8 @@ public class BoidSpawner : Singleton<BoidSpawner>
     private Color tapIndicatorColor;
     #endregion
 
+    [SerializeField]
+    private float boidSpawnWobbleSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -73,8 +75,28 @@ public class BoidSpawner : Singleton<BoidSpawner>
 
                 // Create circular pulse at spawn position
                 StartCoroutine(CreatePulse(boid.transform.position));
+
+                // Bounce its scale
+                StartCoroutine(WobbleBoidScale(boid));
             }
         });
+    }
+
+    /// <summary>
+    /// Bounces boid scale from zero to full, with some wobble at the end
+    /// </summary>
+    /// <param name="boid"></param>
+    /// <returns></returns>
+    IEnumerator WobbleBoidScale(Boid boid)
+    {
+        Vector3 startScale = Vector3.zero;
+        Vector3 endScale = boidPrefab.transform.localScale;
+        for(float t = 0; t < 1; t += Time.deltaTime * boidSpawnWobbleSpeed)
+        {
+            boid.transform.localScale = Mathfx.Berp(startScale, endScale, t);
+            yield return null;
+        }
+        boid.transform.localScale = endScale;
     }
 
     /// <summary>

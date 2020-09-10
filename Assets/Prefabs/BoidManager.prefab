@@ -105,3 +105,4 @@ MonoBehaviour:
     type: 3}
   tapIndicatorSpeed: 1.75
   tapIndicatorColor: {r: 0, g: 1, b: 1, a: 1}
+  boidSpawnWobbleSpeed: 2.5
