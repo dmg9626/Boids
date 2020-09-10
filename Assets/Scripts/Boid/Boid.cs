@@ -94,8 +94,17 @@ public class Boid : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    /// <summary>
+    /// Dictates whether this boid should recalculate its path.
+    /// Value alternates between true/false each frame.
+    /// </summary>
+    private bool update;
+
     void Start()
     {
+        // Randomly determine which frame to update on
+        update = Random.Range(0, 2) == 0;
+
         // Set random boid rotation
         float degrees = Random.Range(0f, 360f);
         transform.rotation = Quaternion.Euler(0,0,degrees);
@@ -108,11 +117,33 @@ public class Boid : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Flip value of update
+        update = !update;
+
+        // Only recalculate direction every other frame
+        if (!update)
+        {
+            // Turn in direction based on surrounding boids
+            Vector3 newDirection = RecalculateDirection();
+            RotateTowards(newDirection);
+        }
+        // Debug.DrawRay(transform.position, sum * settings.moveSpeed, Color.green);
+
+        // Move in direction of new rotation (scaled by movement speed)
+        transform.position += transform.up * settings.moveSpeed * Time.fixedDeltaTime;
+    }
+
+    /// <summary>
+    /// Generates new rotation vector based on nearby boids
+    /// </summary>
+    /// <returns></returns>
+    Vector3 RecalculateDirection()
+    {
         // Get movement in straight line
         Vector3 forward = transform.up;
 
         List<Boid> boids = BoidDetection.NearbyBoids(this, settings);
-        
+
         Vector3 separation = BoidDetection.GetSeparation(this, boids, settings).normalized * settings.separation;
         Vector3 alignment = BoidDetection.GetAlignment(this, boids, settings).normalized * settings.alignment;
         Vector3 cohesion = BoidDetection.GetCohesion(this, boids, settings).normalized * settings.cohesion;
@@ -120,16 +151,8 @@ public class Boid : MonoBehaviour
         // Generate random movement vector
         Vector3 noise = Random.insideUnitCircle * settings.noise;
 
-        // Get averages of all vectors
-        Vector3 sum = (forward + separation + alignment + cohesion + noise).normalized;
-        
-        // Debug.DrawRay(transform.position, sum * settings.moveSpeed, Color.green);
-
-        // Apply resulting rotation to boid
-        RotateTowards(sum);
-
-        // Move in direction of new rotation (scaled by movement speed)
-        transform.position += transform.up * settings.moveSpeed * Time.fixedDeltaTime;
+        // Return average of all vectors
+        return (forward + separation + alignment + cohesion + noise).normalized;
     }
 
     /// <summary>
@@ -144,7 +167,10 @@ public class Boid : MonoBehaviour
         // Calculate rotation towards target direction
         Quaternion targetRotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
 
+        // Double rotation speed, since we update direction every other frame
+        float rotationSpeed = settings.rotationSpeed * 2;
+        
         // Smooth rotation towards target
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * settings.rotationSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed);
     }
 }
