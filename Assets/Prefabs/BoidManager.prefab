@@ -99,5 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 673419690836223465, guid: 3ebddac9a6b674139a95c2eaf083ca61,
     type: 3}
-  clickDetection: {fileID: 0}
   startingBoids: 150
+  clickDetection: {fileID: 0}
+  tapIndicatorPrefab: {fileID: 2519228924845987795, guid: 5ccf35966bf84134fbeaf818566c826c,
+    type: 3}
+  tapIndicatorSpeed: 1.75
+  tapIndicatorColor: {r: 0, g: 1, b: 1, a: 1}
