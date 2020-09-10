@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
+    /// <summary>
+    /// Contains UI elements that control settings
+    /// </summary>
+    [SerializeField]
+    private GameObject bodyContainer;
+
     #region Sliders
     [Header("Sliders")]
 
@@ -53,16 +59,10 @@ public class SettingsPanel : MonoBehaviour
     [Header("Misc Buttons")]
 
     /// <summary>
-    /// Hides settings panel when clicked
+    /// Hides/shows settings panel when clicked
     /// </summary>
     [SerializeField]
-    private Button minimizeButton;
-
-    /// <summary>
-    /// Brings up settings panel when clicked
-    /// </summary>
-    [SerializeField]
-    private Button maximizeButton;
+    private Button toggleMenuButton;
     
     /// <summary>
     /// Resets flocking parameters to default values
@@ -70,6 +70,21 @@ public class SettingsPanel : MonoBehaviour
     [SerializeField]
     private Button resetButton;
     #endregion
+
+    #region UISettings
+    [Header("Panel Settings")]
+    [SerializeField]
+    private float openedPanelHeight = 750;
+    [SerializeField]
+    private float closedPanelHeight = 100;
+
+    /// <summary>
+    /// True if panel is open, false if minimized
+    /// </summary>
+    [SerializeField]
+    private bool panelOpen;
+    #endregion
+
 
     private float defaultSeparationWeight;
     private float defaultAlignmentWeight;
@@ -113,8 +128,11 @@ public class SettingsPanel : MonoBehaviour
     private void InitializeButtons()
     {
         // Set up events for minimize/maximize buttons
-        minimizeButton.onClick.AddListener(() => Minimize());
-        maximizeButton.onClick.AddListener(() => Maximize());
+        toggleMenuButton.onClick.AddListener(() =>
+        {
+            panelOpen = !panelOpen;
+            SetPanelOpen(panelOpen);
+        });
 
         // Set up movement/rotation speed adjustment buttons
         increaseMoveSpeed.onClick.AddListener(() => ChangeMoveSpeed(1));
@@ -148,21 +166,19 @@ public class SettingsPanel : MonoBehaviour
     }
 
     /// <summary>
-    /// Hides settings panel
+    /// Hides/shows settings panel
     /// </summary>
-    private void Minimize()
+    private void SetPanelOpen(bool open)
     {
-        gameObject.SetActive(false);
-        maximizeButton.gameObject.SetActive(true);
-    }
+        // Hide/show menu settings
+        bodyContainer.SetActive(open);
 
-    /// <summary>
-    /// Shows settings panel
-    /// </summary>
-    private void Maximize()
-    {
-        gameObject.SetActive(true);
-        maximizeButton.gameObject.SetActive(false);
+        // Expand/minimize menu panel size
+        RectTransform panelRect = transform as RectTransform;
+        panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, (open ? openedPanelHeight : closedPanelHeight));
+
+        // Flip button sprite to face up/down when closed/open
+        toggleMenuButton.transform.localScale = new Vector3(1, (open ? 1 : -1), 1);
     }
 
     public void ResetValues()
