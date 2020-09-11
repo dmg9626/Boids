@@ -6,12 +6,6 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
-    /// <summary>
-    /// Contains UI elements that control settings
-    /// </summary>
-    [SerializeField]
-    private GameObject bodyContainer;
-
     #region Sliders
     [Header("Sliders")]
 
@@ -58,12 +52,9 @@ public class SettingsPanel : MonoBehaviour
     #region MiscButtons
     [Header("Misc Buttons")]
 
-    /// <summary>
-    /// Hides/shows settings panel when clicked
-    /// </summary>
     [SerializeField]
     private Button toggleMenuButton;
-    
+
     /// <summary>
     /// Resets flocking parameters to default values
     /// </summary>
@@ -95,6 +86,22 @@ public class SettingsPanel : MonoBehaviour
     private bool panelOpen;
     #endregion
 
+    #region Mute
+    [Header("Mute Button")]
+    [SerializeField]
+    private Button toggleMuteButton;
+
+    [SerializeField]
+    private Image muteImage;
+
+    [SerializeField]
+    private Sprite soundOffSprite;
+
+    [SerializeField]
+    private Sprite soundOnSprite;
+
+    private bool musicPlaying = true;
+    #endregion
 
     private float defaultSeparationWeight;
     private float defaultAlignmentWeight;
@@ -147,6 +154,16 @@ public class SettingsPanel : MonoBehaviour
                 panelOpen = !panelOpen;
                 setPanelCoroutine = StartCoroutine(SetPanelOpen(panelOpen));
             }
+        });
+
+        toggleMuteButton.onClick.AddListener(() =>
+        {
+            // Mute/unmute music
+            musicPlaying = !musicPlaying;
+            SoundController.Instance.SetMusicPlaying(musicPlaying);
+
+            // Swap mute sprite on button to reflect change
+            muteImage.sprite = musicPlaying ? soundOnSprite : soundOffSprite;
         });
 
         // Set up movement/rotation speed adjustment buttons
