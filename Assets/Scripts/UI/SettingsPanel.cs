@@ -74,9 +74,16 @@ public class SettingsPanel : MonoBehaviour
     #region UISettings
     [Header("Panel Settings")]
     [SerializeField]
-    private float openedPanelHeight = 750;
+    private float openedPanelHeight = 0;
     [SerializeField]
-    private float closedPanelHeight = 100;
+    private float closedPanelHeight = -650;
+
+    /// <summary>
+    /// Speed at which settings panel slides open/closed
+    /// </summary>
+    [Range(0, 5)]
+    [SerializeField]
+    private float slideSpeed = 2.5f;
 
     /// <summary>
     /// True if panel is open, false if minimized
@@ -99,6 +106,9 @@ public class SettingsPanel : MonoBehaviour
         InitializeSliders();
         InitializeButtons();
         UpdateText();
+
+        // Set panel to starting position
+        StartCoroutine(SetPanelOpen(panelOpen, false));
     }
 
     private void UpdateText()
@@ -127,11 +137,13 @@ public class SettingsPanel : MonoBehaviour
 
     private void InitializeButtons()
     {
-        // Set up events for minimize/maximize buttons
+        // Toggle menu button slides panel open/closed (when not already moving)
         toggleMenuButton.onClick.AddListener(() =>
         {
-            panelOpen = !panelOpen;
-            SetPanelOpen(panelOpen);
+            if(setPanelCoroutine == null) {
+                panelOpen = !panelOpen;
+                StartCoroutine(SetPanelOpen(panelOpen, false));
+            }
         });
 
         // Set up movement/rotation speed adjustment buttons
@@ -165,21 +177,43 @@ public class SettingsPanel : MonoBehaviour
         UpdateText();
     }
 
+
+    private Coroutine setPanelCoroutine;
+
     /// <summary>
     /// Hides/shows settings panel
     /// </summary>
-    private void SetPanelOpen(bool open)
+    private IEnumerator SetPanelOpen(bool open, bool animate = true)
     {
-        // Hide/show menu settings
-        bodyContainer.SetActive(open);
+        // Toggle panel without animation
+        if(!animate)
+        {
+            // Expand/minimize menu panel size
+            RectTransform panelRect = transform as RectTransform;
+            panelRect.position = new Vector2(panelRect.position.x, (open ? openedPanelHeight : closedPanelHeight));
 
-        // Expand/minimize menu panel size
-        RectTransform panelRect = transform as RectTransform;
-        panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, (open ? openedPanelHeight : closedPanelHeight));
-
-        // Flip button sprite to face up/down when closed/open
-        toggleMenuButton.transform.localScale = new Vector3(1, (open ? 1 : -1), 1);
+            // Flip button sprite to face up/down when closed/open
+            toggleMenuButton.transform.localScale = new Vector3(1, (open ? 1 : -1), 1);
+        }
+        // Slide panel with animation
+        else
+        {
+            //setPanelCoroutine = StartCoroutine(SlidePanel(open));
+            //while (setPanelCoroutine != null)
+            //    yield return null;
+        }
+        yield return null;
     }
+
+    //private IEnumerator SlidePanel(bool open)
+    //{
+    //    for(float t = 0; t < 1; t += Time.deltaTime * slideSpeed) {
+    //        // Slide panel up/down a bit
+    //        yield return null;
+    //    }
+
+    //    setPanelCoroutine = null;
+    //}
 
     public void ResetValues()
     {

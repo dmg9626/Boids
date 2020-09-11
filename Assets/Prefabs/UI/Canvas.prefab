@@ -2496,8 +2496,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -10, y: 10}
-  m_SizeDelta: {x: 718, y: 760}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: 718, y: 750}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &985275755352032299
 CanvasRenderer:
@@ -2561,9 +2561,10 @@ MonoBehaviour:
   rotationSpeed: {fileID: 985275755851246398}
   toggleMenuButton: {fileID: 985275755414726916}
   resetButton: {fileID: 985275754337014131}
-  openedPanelHeight: 750
-  closedPanelHeight: 100
-  panelOpen: 1
+  openedPanelHeight: 0
+  closedPanelHeight: -650
+  slideSpeed: 2.5
+  panelOpen: 0
 --- !u!1 &985275755414726918
 GameObject:
   m_ObjectHideFlags: 0
