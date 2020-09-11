@@ -2563,7 +2563,58 @@ MonoBehaviour:
   resetButton: {fileID: 985275754337014131}
   openedPanelHeight: 0
   closedPanelHeight: -650
-  slideSpeed: 2.5
+  slideSpeed: 2
+  slideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5682818
+      value: 1.0475173
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6447323
+    - serializedVersion: 3
+      time: 0.7261654
+      value: 0.9683131
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.92654616
+      value: 1.0125258
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.33271885
+      outSlope: -0.33271885
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.54186267
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   panelOpen: 0
 --- !u!1 &985275755414726918
 GameObject:

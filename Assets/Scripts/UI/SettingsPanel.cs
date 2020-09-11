@@ -85,6 +85,9 @@ public class SettingsPanel : MonoBehaviour
     [SerializeField]
     private float slideSpeed = 2.5f;
 
+    [SerializeField]
+    private AnimationCurve slideCurve;
+
     /// <summary>
     /// True if panel is open, false if minimized
     /// </summary>
@@ -142,7 +145,7 @@ public class SettingsPanel : MonoBehaviour
         {
             if(setPanelCoroutine == null) {
                 panelOpen = !panelOpen;
-                StartCoroutine(SetPanelOpen(panelOpen, false));
+                setPanelCoroutine = StartCoroutine(SetPanelOpen(panelOpen));
             }
         });
 
@@ -185,35 +188,33 @@ public class SettingsPanel : MonoBehaviour
     /// </summary>
     private IEnumerator SetPanelOpen(bool open, bool animate = true)
     {
-        // Toggle panel without animation
-        if(!animate)
-        {
-            // Expand/minimize menu panel size
-            RectTransform panelRect = transform as RectTransform;
-            panelRect.position = new Vector2(panelRect.position.x, (open ? openedPanelHeight : closedPanelHeight));
+        // Flip button sprite to face up/down when closed/open
+        toggleMenuButton.transform.localScale = new Vector3(1, (open ? 1 : -1), 1);
 
-            // Flip button sprite to face up/down when closed/open
-            toggleMenuButton.transform.localScale = new Vector3(1, (open ? 1 : -1), 1);
-        }
         // Slide panel with animation
-        else
-        {
-            //setPanelCoroutine = StartCoroutine(SlidePanel(open));
-            //while (setPanelCoroutine != null)
-            //    yield return null;
-        }
-        yield return null;
+        setPanelCoroutine = StartCoroutine(SlidePanel(open, animate));
+        while (setPanelCoroutine != null)
+            yield return null;
     }
 
-    //private IEnumerator SlidePanel(bool open)
-    //{
-    //    for(float t = 0; t < 1; t += Time.deltaTime * slideSpeed) {
-    //        // Slide panel up/down a bit
-    //        yield return null;
-    //    }
+    private IEnumerator SlidePanel(bool open, bool animate)
+    {
+        RectTransform panelRect = transform as RectTransform;
+        Vector2 startPosition = new Vector2(panelRect.position.x, !open ? openedPanelHeight : closedPanelHeight);
+        Vector2 endPosition = new Vector2(panelRect.position.x, open ? openedPanelHeight : closedPanelHeight);
 
-    //    setPanelCoroutine = null;
-    //}
+        if (animate) {
+            for (float t = 0; t < 1; t += Time.deltaTime * slideSpeed) {
+                // Slide panel up/down a bit
+                float height = Mathf.LerpUnclamped(startPosition.y, endPosition.y, slideCurve.Evaluate(t));
+                panelRect.position = new Vector2(panelRect.position.x, height);
+                yield return null;
+            }
+        }
+        panelRect.position = endPosition;
+
+        setPanelCoroutine = null;
+    }
 
     public void ResetValues()
     {
