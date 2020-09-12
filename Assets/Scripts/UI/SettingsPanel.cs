@@ -104,7 +104,7 @@ public class SettingsPanel : MonoBehaviour
     #endregion
 
     [SerializeField]
-    private GameObject bodyContents;
+    private CanvasGroup bodyContents;
 
     private float defaultSeparationWeight;
     private float defaultAlignmentWeight;
@@ -220,23 +220,32 @@ public class SettingsPanel : MonoBehaviour
     private IEnumerator SlidePanel(bool open, bool animate)
     {
         RectTransform panelRect = transform as RectTransform;
+
         Vector2 startSize = new Vector2(panelRect.sizeDelta.x, !open ? openedPanelHeight : closedPanelHeight);
         Vector2 endSize = new Vector2(panelRect.sizeDelta.x, open ? openedPanelHeight : closedPanelHeight);
 
-        if(!open)
-            bodyContents.SetActive(open);
+        float startAlpha = open ? 0 : 1;
+        float endAlpha = !open ? 0 : 1;
+
         if (animate) {
             for (float t = 0; t < 1; t += Time.deltaTime * slideSpeed) {
                 // Slide panel up/down a bit
                 float height = Mathf.LerpUnclamped(startSize.y, endSize.y, slideCurve.Evaluate(t));
                 panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, height);
 
+                // Fade menu contents in/out
+                float alpha = Mathf.LerpUnclamped(startAlpha, endAlpha, slideCurve.Evaluate(t));
+                bodyContents.alpha = alpha;
+
                 yield return null;
             }
         }
         panelRect.sizeDelta = endSize;
-        bodyContents.SetActive(open);
+        bodyContents.alpha = endAlpha;
 
+        // block raycasts: off when closed, on when open 
+        // (body rect blocks panel header buttons when closed)
+        bodyContents.blocksRaycasts = open;
 
         setPanelCoroutine = null;
     }
