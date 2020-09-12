@@ -103,6 +103,9 @@ public class SettingsPanel : MonoBehaviour
     private bool musicPlaying = true;
     #endregion
 
+    [SerializeField]
+    private GameObject bodyContents;
+
     private float defaultSeparationWeight;
     private float defaultAlignmentWeight;
     private float defaultCohesionWeight;
@@ -217,18 +220,23 @@ public class SettingsPanel : MonoBehaviour
     private IEnumerator SlidePanel(bool open, bool animate)
     {
         RectTransform panelRect = transform as RectTransform;
-        Vector2 startPosition = new Vector2(panelRect.position.x, !open ? openedPanelHeight : closedPanelHeight);
-        Vector2 endPosition = new Vector2(panelRect.position.x, open ? openedPanelHeight : closedPanelHeight);
+        Vector2 startSize = new Vector2(panelRect.sizeDelta.x, !open ? openedPanelHeight : closedPanelHeight);
+        Vector2 endSize = new Vector2(panelRect.sizeDelta.x, open ? openedPanelHeight : closedPanelHeight);
 
+        if(!open)
+            bodyContents.SetActive(open);
         if (animate) {
             for (float t = 0; t < 1; t += Time.deltaTime * slideSpeed) {
                 // Slide panel up/down a bit
-                float height = Mathf.LerpUnclamped(startPosition.y, endPosition.y, slideCurve.Evaluate(t));
-                panelRect.position = new Vector2(panelRect.position.x, height);
+                float height = Mathf.LerpUnclamped(startSize.y, endSize.y, slideCurve.Evaluate(t));
+                panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, height);
+
                 yield return null;
             }
         }
-        panelRect.position = endPosition;
+        panelRect.sizeDelta = endSize;
+        bodyContents.SetActive(open);
+
 
         setPanelCoroutine = null;
     }
